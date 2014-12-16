@@ -47,4 +47,19 @@ feature 'restaurants' do
 
   end
 
+  context 'editing restaurants' do
+
+    before {Restaurant.create(name: 'Little Chef')}
+
+    it 'lets a user edit a restaurant' do 
+      visit '/restaurants'
+      click_link 'Edit Little Chef'
+      fill_in 'Name', with: 'Little Chef'
+      click_button 'UPDATE ME HONEY MONSTER'
+      expect(page).to have_content 'Little Chef'
+      expect(current_path).to eq '/restaurants'
+    end
+
+  end
+
 end
