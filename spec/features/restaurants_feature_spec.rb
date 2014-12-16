@@ -75,4 +75,15 @@ feature 'restaurants' do
 
   end
 
+  context 'an invalid restaurant' do 
+    scenario 'does not let you submit a name that is too short' do 
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'kf'
+      click_button 'GO FISHING HONEY MONSTER'
+      expect(page).not_to have_css 'h2', text: 'kf'
+      expect(page).to have_content 'error'
+    end
+  end
+
 end
