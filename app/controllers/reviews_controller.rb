@@ -7,11 +7,15 @@ class ReviewsController < ApplicationController
 
 	def create
 		@restaurant = Restaurant.find(params[:restaurant_id])
-		@user = current_user.id 
-		@review = @restaurant.reviews.create(review_params)
-		redirect_to restaurants_path
-		if !@review.new_record?
+		@user = current_user.id
+
+		if @restaurant.reviews.map {|review| review.user_id }.include?(@user)
 			flash[:notice] = 'Review something else'
+			redirect_to restaurants_path
+		else 
+			@restaurant.reviews.create(review_params)
+			flash[:notice] = 'U R SUCH A LEDGE'
+			redirect_to restaurants_path
 		end
 	end
 
