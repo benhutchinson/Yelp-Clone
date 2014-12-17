@@ -1,7 +1,5 @@
 class ReviewsController < ApplicationController
 
-
-
 	def new
 		@restaurant = Restaurant.find(params[:restaurant_id])
 		@review = Review.new
@@ -22,10 +20,15 @@ class ReviewsController < ApplicationController
 	end
 
 	def destroy
-		before_action :authenticate_user!
-		# @user = current_user.id
 		@restaurant = Restaurant.find(params[:restaurant_id])
-		@restaurant.reviews.destroy(review_params)
+		@review = @restaurant.reviews.find(params[:id])
+		if current_user && @review.user_id == current_user.id
+			@review.destroy
+			flash[:notice] = 'IF WE DELETE EVERYTHING, THERE WILL BE NOTHING TO READ'
+		else
+			flash[:notice] = 'Sorry, you are not permitted since you are not the author'
+		end
+		redirect_to restaurants_path
 	end
 
 	def review_params

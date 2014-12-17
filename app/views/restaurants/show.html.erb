@@ -1,2 +1,17 @@
 <p><%= @restaurant.name %></p>
 <p><%= @restaurant.description %></p>
+
+<% if @restaurant.reviews.any? %>
+  <h2>The Reviews</h2>
+      <ul>
+        <% @restaurant.reviews.each do |review| %>
+          <li>
+            <%= review.thoughts %>, <strong><%= review.rating %></strong>/5
+            <%= link_to "Delete Review", restaurant_review_path(@restaurant, review), method: :delete %>  
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No reviews.</p>
+    <% end %>
+
