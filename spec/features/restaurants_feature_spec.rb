@@ -66,50 +66,65 @@ feature 'restaurants' do
 
   end
 
-  # context 'editing restaurants' do
+  context 'editing restaurants' do
 
-  #   before {Restaurant.create(name: 'Little Chef')}
+    before {Restaurant.create(name: 'Little Chef')}
 
-  #   it 'lets a user edit a restaurant' do 
-  #     visit '/restaurants'
-  #     click_link 'Edit Little Chef'
-  #     fill_in 'Name', with: 'Little Chef'
-  #     click_button 'UPDATE ME HONEY MONSTER'
-  #     expect(page).to have_content 'Little Chef'
-  #     expect(current_path).to eq '/restaurants'
-  #   end
+    it 'lets a signed-in user edit a restaurant' do 
+      sign_in
+      visit '/restaurants'
+      click_link 'Edit Little Chef'
+      fill_in 'Name', with: 'Little Chef'
+      click_button 'UPDATE ME HONEY MONSTER'
+      expect(page).to have_content 'Little Chef'
+      expect(current_path).to eq '/restaurants'
+    end
 
-  # end
+    it 'wont let a signed-out user edit a restaurant' do 
+      visit '/restaurants'
+      click_link 'Edit Little Chef'
+      expect(page).to have_content 'You need to sign in'
+    end
 
-  # context 'deleting restaurants' do
+  end
 
-  # before {Restaurant.create name: 'KFC'}
+  context 'deleting restaurants' do
 
-  #   scenario 'removes a restaurant when a user clicks a delete link' do
-  #     visit '/restaurants'
-  #     click_link 'Delete KFC'
-  #     expect(page).not_to have_content 'KFC'
-  #     expect(page).to have_content 'Restaurant deleted successfully'
-  #   end
+  before {Restaurant.create name: 'KFC'}
 
-  # end
+    scenario 'removes a restaurant when a signed-in user clicks a delete link' do
+      sign_in
+      visit '/restaurants'
+      click_link 'Delete KFC'
+      expect(page).not_to have_content 'KFC'
+      expect(page).to have_content 'Restaurant deleted successfully'
+    end
 
-  # context 'an invalid restaurant' do 
-  #   scenario 'does not let you submit a name that is too short' do 
-  #     visit '/restaurants'
-  #     click_link 'Add a restaurant'
-  #     fill_in 'Name', with: 'kf'
-  #     click_button 'GO FISHING HONEY MONSTER'
-  #     expect(page).not_to have_css 'h2', text: 'kf'
-  #     expect(page).to have_content 'error'
-  #   end
+    scenario ' does not remove a restaurant when a signed-out user clicks a delete link' do
+      visit '/restaurants'
+      click_link 'Delete KFC'
+      expect(page).to have_content 'You need to sign in'
+    end
 
-  #   scenario "is not valid unless it has a unique name" do
-  #     Restaurant.create(name: "Moe's Tavern")
-  #     restaurant = Restaurant.new(name: "Moe's Tavern")
-  #     expect(restaurant).to have(1).error_on(:name)
-  #   end
+  end
+
+  context 'an invalid restaurant' do 
+    scenario 'does not let you submit a name that is too short' do
+      sign_in 
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'kf'
+      click_button 'GO FISHING HONEY MONSTER'
+      expect(page).not_to have_css 'h2', text: 'kf'
+      expect(page).to have_content 'error'
+    end
+
+    scenario "is not valid unless it has a unique name" do
+      Restaurant.create(name: "Moe's Tavern")
+      restaurant = Restaurant.new(name: "Moe's Tavern")
+      expect(restaurant).to have(1).error_on(:name)
+    end
     
-  # end
+  end
 
 end
