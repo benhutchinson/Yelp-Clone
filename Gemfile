@@ -28,6 +28,8 @@ gem 'spring',        group: :development
 
 gem 'devise'
 
+gem 'omniauth-facebook'
+
 group :test do
   gem 'rspec-rails'
   gem 'capybara'
