@@ -1,5 +1,9 @@
-<%= form_for @restaurant do |f| %>
+<%= form_for @restaurant, html: {multipart: true} do |f| %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
   <%= f.label :name %>
   <%= f.text_field :name %>
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+  <%= f.file_field :image %>
   <%= f.submit "UPDATE ME HONEY MONSTER" %>
 <% end %>

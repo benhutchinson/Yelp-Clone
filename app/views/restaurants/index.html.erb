@@ -4,8 +4,9 @@
 
 <% if @restaurants.any? %>
 	<% @restaurants.each do |restaurant| %>
-		<h2><%= link_to "#{restaurant.name}", restaurant_path(restaurant) %></h2>
+		<h2><%= link_to "#{restaurant.name}", restaurant_path(restaurant) %> : <%= restaurant.description %></h2>
 		<h3>Average rating: <%= star_rating(restaurant.average_rating) %></h3>
+    <%= image_tag restaurant.image.url(:thumb) %>
     <h3><em><%= link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant) %></em></h3>
     <h4><%= link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete %></h4>
     <h4><%= link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant) %></h4>

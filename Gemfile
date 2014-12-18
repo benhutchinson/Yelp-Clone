@@ -30,6 +30,10 @@ gem 'devise'
 
 gem 'omniauth-facebook'
 
+gem 'paperclip'
+
+gem 'aws-sdk'
+
 gem 'rails_12factor', group: :production
 
 group :test do
