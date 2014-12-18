@@ -90,10 +90,14 @@ feature 'restaurants' do
 
   context 'deleting restaurants' do
 
-  before {Restaurant.create name: 'KFC'}
-
-    scenario 'removes a restaurant when a signed-in user clicks a delete link' do
+    before do 
       sign_in
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'KFC'
+      click_button 'GO FISHING HONEY MONSTER'
+    end
+
+    scenario 'removes a restaurant when a signed-in user (who created the restaurant) clicks a delete link' do
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
@@ -101,6 +105,7 @@ feature 'restaurants' do
     end
 
     scenario ' does not remove a restaurant when a signed-out user clicks a delete link' do
+      click_link 'Sign out'
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).to have_content 'You need to sign in'
@@ -110,7 +115,7 @@ feature 'restaurants' do
 
   context 'an invalid restaurant' do 
     scenario 'does not let you submit a name that is too short' do
-      sign_in 
+      sign_in
       visit '/restaurants'
       click_link 'Add a restaurant'
       fill_in 'Name', with: 'kf'
