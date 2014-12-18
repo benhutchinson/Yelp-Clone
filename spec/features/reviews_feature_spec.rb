@@ -39,7 +39,7 @@ feature 'reviewing' do
     fill_in('Password confirmation', with: 'test1test')
     click_button('Sign up')
     leave_review('FOUND MYSELF AT THIS GAFF', '5')
-    expect(page).to have_content('Average rating: 4')
+    expect(page).to have_content('Average rating: ★★★★☆')
   end
 
 end
