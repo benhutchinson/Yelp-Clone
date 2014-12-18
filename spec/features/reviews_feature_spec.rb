@@ -42,4 +42,10 @@ feature 'reviewing' do
     expect(page).to have_content('Average rating: ★★★★☆')
   end
 
+  # scenario 'displays how long ago a given review was added' do 
+  #   leave_review('PLAIN JANE', '3')
+  #   Restaurant.last.reviews.last.update_attributes(:created_at => Time.now - 3600)
+  #   expect(page).to have_content('1 hour ago')
+  # end
+
 end
