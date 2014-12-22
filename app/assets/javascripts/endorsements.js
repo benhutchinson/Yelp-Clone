@@ -6,7 +6,11 @@ $(document).ready(function() {
       var endorsementCount = $(this).siblings('.endorsements_count');
 
       $.post(this.href, function(response){
-        endorsementCount.text(response.new_endorsement_count);
+        if(response.new_endorsement_count == 1){ 
+         endorsementCount.text(response.new_endorsement_count + ' endorsement');
+       } else {        
+         endorsementCount.text(response.new_endorsement_count + ' endorsements');
+       };
     })
   })
 })
