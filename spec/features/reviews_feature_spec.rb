@@ -30,14 +30,18 @@ feature 'reviewing' do
     click_button 'Leave Abuse'
   end
 
-  scenario 'displays an average rating for all reviews' do
-    leave_review('PLAIN JANE', '3')
-    click_link 'Sign out'
+  def second_user_signs_in
     click_link('Sign up')
     fill_in('Email', with: 'test1@example.com')
     fill_in('Password', with: 'test1test')
     fill_in('Password confirmation', with: 'test1test')
     click_button('Sign up')
+  end
+
+  scenario 'displays an average rating for all reviews' do
+    leave_review('PLAIN JANE', '3')
+    click_link 'Sign out'
+    second_user_signs_in
     leave_review('FOUND MYSELF AT THIS GAFF', '5')
     expect(page).to have_content('Average rating: ★★★★☆')
   end
