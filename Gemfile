@@ -37,6 +37,7 @@ gem 'aws-sdk'
 gem 'rails_12factor', group: :production
 
 group :test do
+  gem 'timecop'
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'rspec-rails'

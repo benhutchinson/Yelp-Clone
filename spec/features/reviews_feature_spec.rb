@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'timecop'
 
 feature 'reviewing' do
 
@@ -46,10 +47,37 @@ feature 'reviewing' do
     expect(page).to have_content('Average rating: ★★★★☆')
   end
 
-  # scenario 'displays how long ago a given review was added' do 
-  #   leave_review('PLAIN JANE', '3')
-  #   Restaurant.last.reviews.last.update_attributes(:created_at => Time.now - 3600)
-  #   expect(page).to have_content('1 hour ago')
-  # end
+  scenario 'displays if it was created less than an hour ago' do 
+    leave_review('PLAIN JANE', '3')
+    expect(page).to have_content('Reviewed less than an hour ago')
+  end
+
+  scenario 'displays how many hours ago it was created if more than an hour ago' do 
+    leave_review('PLAIN JANE', '3')
+    # here, the review entry in the database is manually altered in the database
+    # this is one way of simulating time for the purposes of the test
+    # a page refresh is simulated since the user is already on
+    # the applicable page following submission of the review
+    Restaurant.last.reviews.last.update_attributes(:created_at => Time.now - 7200)
+    Restaurant.last.reviews.last
+    visit '/'
+    expect(page).to have_content('Reviewed around 2 hours ago')
+  end
+
+  scenario 'displays yesterday it was created yesterday' do 
+    # this is another alternative, deploying a gem called Timecop
+    leave_review('PLAIN JANE', '3')
+    Timecop.travel(Time.now + 100000)
+    visit '/'
+    expect(page).to have_content('Reviewed yesterday')
+  end
+
+  scenario 'displays the number of days ago it was created if it was more than a day ago' do 
+    leave_review('PLAIN JANE', '3')
+    Restaurant.last.reviews.last.update_attributes(:created_at => Time.now - 172800)
+    Restaurant.last.reviews.last
+    visit '/'
+    expect(page).to have_content('Reviewed 2 days ago')
+  end
 
 end

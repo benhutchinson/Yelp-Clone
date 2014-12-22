@@ -21,6 +21,7 @@
             <%= link_to "Delete Review", restaurant_reviews_path(restaurant, review), method: :delete %> 
             <%= link_to "Endorse", review_endorsements_path(review), class: 'endorsements-link' %>
             <span class="endorsements_count"> <%= pluralize(review.endorsements.count, "endorsement") %> </span> 
+            <p>Reviewed <%= time_since_review(review) %></p> 
 		      </li>
 		    <% end %>
 		  </ul>
